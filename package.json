@@ -1,0 +1,19 @@
+{
+  "name": "composable",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava tests -v"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ramda": "^0.25.0"
+  },
+  "devDependencies": {
+    "ava": "1.0.0-beta.6",
+    "mocha": "^5.2.0"
+  }
+}
