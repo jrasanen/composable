@@ -147,4 +147,8 @@ test('Examples', t => {
       }
     }
   }))
+
+  t.is('no email', getEmail({
+    deliveryAddress: null
+  }))
 })
