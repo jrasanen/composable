@@ -92,32 +92,32 @@ test('Maybe', t => {
 
 // has no neutral identity, so can't be a monoid
 test('semi group: first', t => {
-  t.is('fizz', First('fizz').concat(First('buzz')).x)
+  t.is('fizz', First('fizz').concat(First('buzz')).valueOf())
 })
 
 // Sum(x).concat(Sum(y)) -> Sum(x + y)
 test('monoid + semi group: Sum', t => {
   // neutral identity
-  t.is(0, Sum.empty().x)
+  t.is(0, Sum.empty().valueOf())
 
   t.is(
     6,
     Sum(1)
       .concat(Sum(2))
       .concat(Sum(3))
-      .x)
+      .valueOf())
 })
 
 // All(false) && All(true) -> All(false)
 test('monoid + semi group: All', t => {
   // neutral identity
-  t.is(true, All.empty().x)
+  t.is(true, All.empty().valueOf())
 
   t.is(
     false,
     All(false)
     .concat(All(true))
-    .x
+    .valueOf()
   )
 
   t.is(
@@ -126,6 +126,6 @@ test('monoid + semi group: All', t => {
     .concat(
       All(false)
       .concat(All(true)))
-    .x
+    .valueOf()
   )
 })

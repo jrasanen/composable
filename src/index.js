@@ -4,6 +4,17 @@ const isNothing = x =>
 const fromNullable = x =>
   isNothing(x) ? Right(x) : Left(x)
 
+/*
+ * Compose takes in functions `f` and `g`, piping `x` through those.
+ */
+const compose =
+  (f, g) =>
+    (x) =>
+      f(g(x))
+
+/*
+ * Wrap the hideous try..catch to use Right and Left identity
+ */
 const tryCatch = f => {
   try {
     return Right(f())
@@ -12,6 +23,7 @@ const tryCatch = f => {
   }
 }
 
+// Right box maps over the given function and value
 const Right = x =>
 ({
   chain: f => f(x),
@@ -20,6 +32,8 @@ const Right = x =>
   inspect: () => `Right(f(${x}))`
 })
 
+// Left box takes the argument and does not map over it,
+// it just returns itself.
 const Left = x =>
 ({
   chain: f => Left(x),
@@ -28,11 +42,17 @@ const Left = x =>
   inspect: () => `Left(${x})`
 })
 
+
+//
+// Semigroup's
+// Our law says we should satisfy the laws of the associativity rule.
+//
 const Sum = x =>
 ({
   x,
   concat: ({x: y}) => Sum(x + y),
-  inspect: `Sum(${x})`
+  inspect: `Sum(${x})`,
+  valueOf: () => x
 })
 Sum.empty = () => Sum(0)
 
@@ -40,15 +60,18 @@ const All = x =>
 ({
   x,
   concat: ({x: y}) => All(x && y),
-  inspect: `All(${x})`
+  inspect: `All(${x})`,
+  valueOf: () => x
 })
 All.empty = () => All(true)
 
+// We don't know the neutral value of "First"!
 const First = x =>
 ({
   x,
   concat: _ => First(x),
-  inspect: `First(${x})`
+  inspect: `First(${x})`,
+  valueOf: () => x
 })
 
 const Maybe = (x) =>
@@ -57,15 +80,6 @@ const Maybe = (x) =>
   map: f => isNothing(x) ? Maybe(null) : Maybe(f(x)),
   valueOf: () => x
 })
-
-const Identity = (x) =>
-({
-  x,
-  map: f => Identity(f(x)),
-  join: () => x,
-  valueOf: () => Identity(x)
-})
-
 
 const Throw = e => { throw new Error(e) }
 
