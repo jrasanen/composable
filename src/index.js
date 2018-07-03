@@ -1,8 +1,11 @@
 const isNothing = x =>
-  x === null || x === undefined
+  x === null || x === undefined;
 
 const fromNullable = x =>
-  isNothing(x) ? Right(x) : Left(x)
+  isNothing(x) ? Left(null) : Right(x)
+
+const head = x => x[0];
+const tail = x => x[x.length - 1]
 
 /*
  * Compose takes in functions `f` and `g`, piping `x` through those.
@@ -42,7 +45,6 @@ const Left = x =>
   inspect: () => `Left(${x})`
 })
 
-
 //
 // Semigroup's
 // Our law says we should satisfy the laws of the associativity rule.
@@ -74,7 +76,7 @@ const First = x =>
   valueOf: () => x
 })
 
-const Maybe = (x) =>
+const Maybe = x =>
 ({
   x,
   map: f => isNothing(x) ? Maybe(null) : Maybe(f(x)),
